@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CreateSecretServiceService {
+  constructor(private http: HttpClient) {}
 
-  constructor() { }
+  createSecret(secret: string, expiration: number): Observable<any> {
+    const formdata = new FormData();
+    formdata.append('password', 'test');
+    formdata.append('ttl', 'week');
 
-  createSecret(secret: string, expiration: number) {
-    console.log('Creating secret', secret, 'with expiration', expiration);
+    return this.http.post('/api', formdata, { responseType: 'text' })
   }
 }

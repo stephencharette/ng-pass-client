@@ -6,6 +6,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { CreateSecretServiceService } from './create-secret-service.service';
 
@@ -18,6 +19,7 @@ import { CreateSecretServiceService } from './create-secret-service.service';
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
+    MatFormFieldModule,
     FormsModule,
     CommonModule,
   ],
@@ -35,12 +37,27 @@ export class CreateSecretComponent {
 
   secret: string;
   expiration = this.expirationOptions[2].expiration;
+  shareSecretUri = '';
+  shareSecretKey: undefined | string;
 
   constructor(private createSecretService: CreateSecretServiceService) {
     this.secret = '';
   }
 
   createSecret() {
-    this.createSecretService.createSecret(this.secret, this.expiration);
+    this.createSecretService
+      .createSecret(this.secret, this.expiration)
+      .subscribe({
+        next: (v) => {
+          let object = JSON.parse(v);
+          this.shareSecretUri = object.uri;
+          this.shareSecretKey = object.key;
+        },
+        error: (e) => console.error(e),
+        complete: () => {
+          console.info('Share secret URI: ', this.shareSecretUri);
+          console.info('Share secret key: ', this.shareSecretKey);
+        }
+      });
   }
 }

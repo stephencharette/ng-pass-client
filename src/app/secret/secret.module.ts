@@ -5,10 +5,7 @@ import { CreateSecretComponent } from './create-secret/create-secret.component';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    CreateSecretComponent
-  ],
+  imports: [CommonModule, CreateSecretComponent],
   exports: [CreateSecretComponent],
 })
 export class SecretModule {}
