@@ -1,24 +1,9 @@
 <main class="p-10">
-  <form action="" class="flex flex-col max-w-2xl mx-auto">
+  <form action="" class="max-w-2xl mx-auto">
     <h1>NgPass</h1>
     <p>NgPass allows you to share secrets in a secure, ephemeral way. Input a single or multi-line secret, its expiration time, and click Generate URL. Share the one-time use URL with your intended recipient.</p>
 
-    <mat-form-field>
-      <mat-label>Secret</mat-label>
-      <textarea matInput placeholder="Your secret"></textarea>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Expiration</mat-label>
-      <mat-select>
-        <mat-option value="week">Week</mat-option>
-        <mat-option value="two-weeks">Two weeks</mat-option>
-        <mat-option value="hour">Hour</mat-option>
-        <mat-option value="day">Day</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button type="submit" mat-raised-button color="primary">Generate URL</button>
+    <app-create-secret class="flex flex-col"></app-create-secret>
   </form>
 </main>
 
