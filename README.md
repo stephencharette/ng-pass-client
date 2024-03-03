@@ -23,7 +23,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - Attribute Directive: [Angular - Attribute directives](https://angular.io/guide/attribute-directives)
 - Structural Directive: [Angular - Structural directives](https://angular.io/guide/structural-directives)
 - Example of custom directive: [Getting Started with Custom Structural Directives in Angular - This Dot Labs](https://www.thisdot.co/blog/getting-started-with-custom-structural-directives-in-angular)
-- [ ] Custom Pipes
+- [X] Custom Pipes
 - Documentation: [Angular - Transforming Data Using Pipes](https://angular.io/guide/pipes)
 - Example of custom pipe: [Angular - Creating pipes for custom data transformations](https://angular.io/guide/pipes-custom-data-trans)
 - [X] Services
