@@ -30,20 +30,28 @@ import { CreateSecretServiceService } from './create-secret-service.service';
   styleUrl: './create-secret.component.css',
 })
 export class CreateSecretComponent {
-  secret: string;
   expiration = EXPIRATION_OPTIONS[2].expiration;
-  shareSecretUri: undefined |string;
+  generateButtonDisabled: boolean = true;
+  secret: undefined | string;
+  shareSecretUri: undefined | string;
   shareSecretKey: undefined | string;
 
-  constructor(private createSecretService: CreateSecretServiceService) {
-    this.secret = '';
-  }
+  constructor(private createSecretService: CreateSecretServiceService) {}
 
   getExpirationOptions() {
     return EXPIRATION_OPTIONS;
   }
 
+  onSecretChange() {
+    this.generateButtonDisabled = false;
+  }
+
   createSecret() {
+    if(!this.secret) {
+      return;
+    }
+
+    this.generateButtonDisabled = true;
     this.createSecretService
       .createSecret(this.secret, this.expiration)
       .subscribe({
