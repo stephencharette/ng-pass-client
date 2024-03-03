@@ -72,14 +72,14 @@ export class CreateSecretComponent {
    * Handle the secret change event
    */
   onSecretChange() {
-    this.toggleButtonDisabled(false);
+    this.toggleGenerateButtonDisabled(false);
   }
 
   /**
-   * Toggle the button disabled state
+   * Toggle the generate button's disabled state
    * @param disabled whether the button should be disabled or not
    */
-  toggleButtonDisabled(disabled: boolean) {
+  toggleGenerateButtonDisabled(disabled: boolean) {
     this.generateButtonDisabled = disabled;
   }
 
@@ -89,7 +89,7 @@ export class CreateSecretComponent {
    */
   toggleFailureState(toggle: boolean) {
     this.failure = toggle;
-    this.toggleButtonDisabled(!toggle);
+    this.toggleGenerateButtonDisabled(!toggle);
   }
 
   /**
@@ -101,7 +101,7 @@ export class CreateSecretComponent {
       return;
     }
 
-    this.toggleButtonDisabled(true);
+    this.toggleGenerateButtonDisabled(true);
     this.createSecretService
       .createSecret(this.secret, this.expiration)
       .subscribe({

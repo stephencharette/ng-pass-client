@@ -47,35 +47,54 @@ export class ViewSecretComponent {
   ) {}
 
   ngOnInit() {
+    this.setKey();
+  }
+
+  /**
+   * Set the key from the query parameter
+   */
+  setKey() {
     this.routingService.getQueryParam('key').subscribe((key) => {
       this.key = key;
     });
   }
 
+  /**
+   * Copy the secret to the clipboard
+   */
   copySecretToClipboard() {
-    if(this.secret) {
+    if (this.secret) {
       this.copyToClipboardService.copyToClipboard(this.secret);
-      this.snackBarService.openSnackBar('Secret copied to clipboard', 'Close', { duration: 3000 });
+      this.snackBarService.openSnackBar('Secret copied to clipboard', 'Close', {
+        duration: 3000,
+      });
     }
   }
 
-  toggleRevealDisabled(toggle: boolean) {
+  /**
+   * Toggle the reveal button's disabled state
+   * @param toggle - whether to disable the reveal button
+   */
+  toggleRevealButtonDisabled(toggle: boolean) {
     this.revealButtonDisabled = toggle;
   }
 
+  /**
+   * Retrieve the secret from the server and set the secret and status
+   */
   retrieveSecret() {
     this.retrieveSecretService.retrieveSecret(this.key).subscribe({
       next: (secretObj) => {
         this.status = 200;
         this.secret = secretObj.key;
-        this.toggleRevealDisabled(true);
+        this.toggleRevealButtonDisabled(true);
       },
       error: (e) => {
         if (e.status === 404) {
-          this.toggleRevealDisabled(true);
+          this.toggleRevealButtonDisabled(true);
         }
         this.status = e.status;
-      }
+      },
     });
   }
 }

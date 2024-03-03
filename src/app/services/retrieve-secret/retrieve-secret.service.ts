@@ -8,6 +8,10 @@ import { Observable } from 'rxjs';
 export class RetrieveSecretService {
   constructor(private http: HttpClient) {}
 
+  /**
+   * Retrieve the secret from the server
+   * @param key The secret's key
+   */
   retrieveSecret(key: string): Observable<any> {
     return this.http.get(`/api/password/${key}`);
   }
