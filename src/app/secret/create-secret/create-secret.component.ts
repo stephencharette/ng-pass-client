@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// MaterialUI
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -8,9 +9,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
+// Constants
 import { EXPIRATION_OPTIONS } from '../contants';
 
-import { CreateSecretServiceService } from './create-secret-service.service';
+// Services
+import { CreateSecretServiceService } from '../../services/create-secret-service/create-secret-service.service';
+import { CopyToClipboardService } from '../../services/copy-to-clipboard-service/copy-to-clipboard.service';
 
 @Component({
   selector: 'app-create-secret',
@@ -35,15 +39,30 @@ export class CreateSecretComponent {
   secret: undefined | string;
   shareSecretUri: undefined | string;
   shareSecretKey: undefined | string;
+  uriCopiedToClipboard: boolean = false;
 
-  constructor(private createSecretService: CreateSecretServiceService) {}
+  constructor(
+    private createSecretService: CreateSecretServiceService,
+    private copyToClipboardService: CopyToClipboardService
+  ) {}
+
+  copyUriToClipboard() {
+    if(this.shareSecretUri) {
+      this.copyToClipboardService.copyToClipboard(this.shareSecretUri);
+      this.uriCopiedToClipboard = true;
+    }
+  }
 
   getExpirationOptions() {
     return EXPIRATION_OPTIONS;
   }
 
   onSecretChange() {
-    this.generateButtonDisabled = false;
+    this.toggleButtonDisabled(false);
+  }
+
+  toggleButtonDisabled(disabled: boolean) {
+    this.generateButtonDisabled = disabled;
   }
 
   createSecret() {
@@ -51,7 +70,7 @@ export class CreateSecretComponent {
       return;
     }
 
-    this.generateButtonDisabled = true;
+    this.toggleButtonDisabled(true);
     this.createSecretService
       .createSecret(this.secret, this.expiration)
       .subscribe({
@@ -64,6 +83,7 @@ export class CreateSecretComponent {
         complete: () => {
           console.info('Share secret URI: ', this.shareSecretUri);
           console.info('Share secret key: ', this.shareSecretKey);
+          // TODO: add pretty alert here instead of console.log...
         }
       });
   }
