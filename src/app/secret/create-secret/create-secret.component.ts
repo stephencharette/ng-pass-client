@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 // Constants
 import { EXPIRATION_OPTIONS } from '../contants';
@@ -15,6 +16,7 @@ import { EXPIRATION_OPTIONS } from '../contants';
 // Services
 import { CreateSecretServiceService } from '../../services/create-secret/create-secret-service.service';
 import { CopyToClipboardService } from '../../services/copy-to-clipboard/copy-to-clipboard.service';
+import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-create-secret',
@@ -28,6 +30,7 @@ import { CopyToClipboardService } from '../../services/copy-to-clipboard/copy-to
     MatFormFieldModule,
     FormsModule,
     CommonModule,
+    MatIconModule
   ],
   providers: [CreateSecretServiceService],
   templateUrl: './create-secret.component.html',
@@ -35,25 +38,25 @@ import { CopyToClipboardService } from '../../services/copy-to-clipboard/copy-to
 })
 export class CreateSecretComponent {
   expiration = EXPIRATION_OPTIONS[2].expiration;
-  failure:boolean = false;
+  failure: boolean = false;
   generateButtonDisabled: boolean = true;
   secret: undefined | string;
   shareSecretUri: undefined | string;
   shareSecretKey: undefined | string;
-  uriCopiedToClipboard: boolean = false;
 
   constructor(
     private createSecretService: CreateSecretServiceService,
-    private copyToClipboardService: CopyToClipboardService
+    private copyToClipboardService: CopyToClipboardService,
+    private snackBarService: SnackBarService
   ) {}
 
   /**
    * Copy the secret URI to the clipboard
    */
   copyUriToClipboard() {
-    if(this.shareSecretUri) {
+    if (this.shareSecretUri) {
       this.copyToClipboardService.copyToClipboard(this.shareSecretUri);
-      this.uriCopiedToClipboard = true;
+      this.snackBarService.openSnackBar('URI copied to clipboard', 'Close', { duration: 3000 });
     }
   }
 
@@ -94,7 +97,7 @@ export class CreateSecretComponent {
    * @returns nothing
    */
   createSecret() {
-    if(!this.secret) {
+    if (!this.secret) {
       return;
     }
 
@@ -115,7 +118,7 @@ export class CreateSecretComponent {
           console.info('Share secret URI: ', this.shareSecretUri);
           console.info('Share secret key: ', this.shareSecretKey);
           // TODO: add pretty alert here instead of console.log...
-        }
+        },
       });
   }
 }

@@ -7,7 +7,11 @@ import { CreateSecretComponent } from './secret/create-secret/create-secret.comp
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CreateSecretComponent, HttpClientModule],
+  imports: [
+    RouterOutlet,
+    CreateSecretComponent,
+    HttpClientModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
