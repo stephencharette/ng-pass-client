@@ -35,6 +35,7 @@ import { CopyToClipboardService } from '../../services/copy-to-clipboard/copy-to
 })
 export class CreateSecretComponent {
   expiration = EXPIRATION_OPTIONS[2].expiration;
+  failure:boolean = false;
   generateButtonDisabled: boolean = true;
   secret: undefined | string;
   shareSecretUri: undefined | string;
@@ -80,6 +81,15 @@ export class CreateSecretComponent {
   }
 
   /**
+   * Toggle the failure state
+   * @param toggle whether the failure state should be toggled or not
+   */
+  toggleFailureState(toggle: boolean) {
+    this.failure = toggle;
+    this.toggleButtonDisabled(!toggle);
+  }
+
+  /**
    * Set the secret uri and key to service response, disable the button, and log the response
    * @returns nothing
    */
@@ -97,8 +107,11 @@ export class CreateSecretComponent {
           this.shareSecretUri = object.uri;
           this.shareSecretKey = object.key;
         },
-        error: (e) => console.error(e),
+        error: (e) => {
+          this.toggleFailureState(true);
+        },
         complete: () => {
+          this.toggleFailureState(false);
           console.info('Share secret URI: ', this.shareSecretUri);
           console.info('Share secret key: ', this.shareSecretKey);
           // TODO: add pretty alert here instead of console.log...
