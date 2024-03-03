@@ -46,6 +46,9 @@ export class CreateSecretComponent {
     private copyToClipboardService: CopyToClipboardService
   ) {}
 
+  /**
+   * Copy the secret URI to the clipboard
+   */
   copyUriToClipboard() {
     if(this.shareSecretUri) {
       this.copyToClipboardService.copyToClipboard(this.shareSecretUri);
@@ -53,18 +56,33 @@ export class CreateSecretComponent {
     }
   }
 
+  /**
+   * Get the expiration options
+   * @returns expiration options
+   */
   getExpirationOptions() {
     return EXPIRATION_OPTIONS;
   }
 
+  /**
+   * Handle the secret change event
+   */
   onSecretChange() {
     this.toggleButtonDisabled(false);
   }
 
+  /**
+   * Toggle the button disabled state
+   * @param disabled whether the button should be disabled or not
+   */
   toggleButtonDisabled(disabled: boolean) {
     this.generateButtonDisabled = disabled;
   }
 
+  /**
+   * Set the secret uri and key to service response, disable the button, and log the response
+   * @returns nothing
+   */
   createSecret() {
     if(!this.secret) {
       return;
