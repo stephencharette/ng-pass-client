@@ -10,7 +10,7 @@ export class CreateSecretServiceService {
 
   createSecret(secret: string, expiration: number): Observable<any> {
     const formdata = new FormData();
-    formdata.append('password', 'test');
+    formdata.append('password', secret);
     formdata.append('ttl', 'week');
 
     return this.http.post('/api', formdata, { responseType: 'text' })
