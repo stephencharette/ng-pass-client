@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
+import { EXPIRATION_OPTIONS } from '../contants';
+
 import { CreateSecretServiceService } from './create-secret-service.service';
 
 @Component({
@@ -28,20 +30,17 @@ import { CreateSecretServiceService } from './create-secret-service.service';
   styleUrl: './create-secret.component.css',
 })
 export class CreateSecretComponent {
-  public expirationOptions = [
-    { expiration: 3600, name: 'Hour' },
-    { expiration: 86400, name: 'Day' },
-    { expiration: 604800, name: 'Week' },
-    { expiration: 1209600, name: 'Two weeks' },
-  ];
-
   secret: string;
-  expiration = this.expirationOptions[2].expiration;
-  shareSecretUri = '';
+  expiration = EXPIRATION_OPTIONS[2].expiration;
+  shareSecretUri: undefined |string;
   shareSecretKey: undefined | string;
 
   constructor(private createSecretService: CreateSecretServiceService) {
     this.secret = '';
+  }
+
+  getExpirationOptions() {
+    return EXPIRATION_OPTIONS;
   }
 
   createSecret() {
