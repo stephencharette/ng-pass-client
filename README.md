@@ -49,6 +49,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [ ] Component interaction (parent/child)
 - When to extract components into smaller components (for encapsulation and reusability). Knowing when to use @Input and @Output variables to allow component interaction. ViewChild too [Angular - ViewChild](https://angular.io/api/core/ViewChild).
 
+## Backend server
+This is the client to the [ng-pass-server](https://github.com/stephencharette/ng-pass-server) .NET solution to encrypt secrets. Run this solution along side this angular project.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
