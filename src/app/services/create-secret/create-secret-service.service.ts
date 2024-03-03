@@ -11,13 +11,13 @@ export class CreateSecretServiceService {
   /**
    * Create a secret on the server
    * @param secret the secret text to be encrypted
-   * @param expiration the expiration time for the secret
+   * @param expiration the expiration time for the secret (e.g. 'week' or 'day' or 'hour')
    * @returns nothing
    */
-  createSecret(secret: string, expiration: number): Observable<any> {
+  createSecret(secret: string, expiration: string): Observable<any> {
     const formdata = new FormData();
     formdata.append('password', secret);
-    formdata.append('ttl', 'week');
+    formdata.append('ttl', expiration);
 
     return this.http.post('/api', formdata, { responseType: 'text' })
   }
