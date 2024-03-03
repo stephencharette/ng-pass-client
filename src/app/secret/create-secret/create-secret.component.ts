@@ -13,8 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { EXPIRATION_OPTIONS } from '../contants';
 
 // Services
-import { CreateSecretServiceService } from '../../services/create-secret-service/create-secret-service.service';
-import { CopyToClipboardService } from '../../services/copy-to-clipboard-service/copy-to-clipboard.service';
+import { CreateSecretServiceService } from '../../services/create-secret/create-secret-service.service';
+import { CopyToClipboardService } from '../../services/copy-to-clipboard/copy-to-clipboard.service';
 
 @Component({
   selector: 'app-create-secret',
