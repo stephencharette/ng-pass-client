@@ -18,7 +18,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     - Imports: other modules whose exported classes are needed by component templates declared within this module
     - Providers: creators of services from this module that contributes to the global collection of services; become accessible by all parts of the application
     - Bootstrap: the main application view for this module, only the `root` module should set the bootstrap property.
-- [ ] Custom Directives (Attribute/Structural)
+- [X] Custom Directives (Attribute/Structural)
 - Example of built in directive: https://angular.io/guide/built-in-directives#built-in-structural-directives
 - Attribute Directive: [Angular - Attribute directives](https://angular.io/guide/attribute-directives)
 - Structural Directive: [Angular - Structural directives](https://angular.io/guide/structural-directives)
@@ -26,7 +26,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [ ] Custom Pipes
 - Documentation: [Angular - Transforming Data Using Pipes](https://angular.io/guide/pipes)
 - Example of custom pipe: [Angular - Creating pipes for custom data transformations](https://angular.io/guide/pipes-custom-data-trans)
-- [ ] Services
+- [X] Services
 - Creating service(s) to create a separation of concerns.
 - Components should focus on presenting data (and binding to the model) whereas a service focuses on data retrieval, manipulation, business logic. Services also are reusable across many components (reusable code).
 - Documentation: [Angular - Introduction to services and dependency injection](https://angular.io/guide/architecture-services)
