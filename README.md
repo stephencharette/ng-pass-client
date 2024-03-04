@@ -19,6 +19,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     - Providers: creators of services from this module that contributes to the global collection of services; become accessible by all parts of the application
     - Bootstrap: the main application view for this module, only the `root` module should set the bootstrap property.
 - [X] Custom Directives (Attribute/Structural)
+- TODO: custom directive example: prevent certain characters
 - Example of built in directive: https://angular.io/guide/built-in-directives#built-in-structural-directives
 - Attribute Directive: [Angular - Attribute directives](https://angular.io/guide/attribute-directives)
 - Structural Directive: [Angular - Structural directives](https://angular.io/guide/structural-directives)
