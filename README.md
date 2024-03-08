@@ -31,8 +31,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - Creating service(s) to create a separation of concerns.
 - Components should focus on presenting data (and binding to the model) whereas a service focuses on data retrieval, manipulation, business logic. Services also are reusable across many components (reusable code).
 - Documentation: [Angular - Introduction to services and dependency injection](https://angular.io/guide/architecture-services)
-- [ ] Forms
+- [X] Forms
 - Understand the difference between template and reactive forms. When to use which?
+    - **Template** forms leverage the `ngModel` from the `FormsModule` import directive which comes from AngularJs. Template forms can use bi-directional (`[(ngModel)]`), one-way data binding (`(ngModel)`), and no-binding (`ngModel`). You would use template forms for small to medium forms, outside of that the form validation gets hairy... It also cannot be easily unit tested. The alternative to template forms for larger more complex forms is reactive forms.
+    - **Reactive** forms use leverage the `formControlName` property and the `formGroup` directive. It uses the `ReactiveFormModule` import. The major difference here is that the validation logic is on the component level rather than the template level. This makes it easier to unit test since the validations are happening programmatically rather than from the template. The component code can also be reduced by using the form builder api from DI. So why is it called "reactive", well reactive forms elements offer an observable api which means you can access more advanced features like pre-saving the form as a draft and undo/redo functinality.
 - Documentation: [Angular Forms Guide: Template Driven and Reactive Forms (angular-university.io)](https://blog.angular-university.io/introduction-to-angular-2-forms-template-driven-vs-model-driven/)
 - [ ] Routing
  - What this is and how it impacts a Single Page Application (SPA)? (Dynamically loading content with full page refreshes). Angular can also be configured to render server-side (SSR) (also known as Angular Universal). Pros/cons of SSR vs SPA.
