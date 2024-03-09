@@ -15,13 +15,13 @@ import {
   FormsModule,
   ReactiveFormsModule,
   FormBuilder,
-  FormGroup
+  FormGroup,
 } from '@angular/forms';
 
 @Component({
   selector: 'input-error-state-matcher-example',
-  templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.css',
+  templateUrl: './sign-in.component.html',
+  styleUrl: './sign-in.component.css',
   standalone: true,
   imports: [
     FormsModule,
@@ -33,8 +33,8 @@ import {
     CommonModule,
   ],
 })
-export class SignUpComponent {
-  title: string = 'Sign up';
+export class SignInComponent {
+  title: string = 'Sign in'
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {

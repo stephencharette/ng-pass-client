@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { CreateSecretComponent } from './secret/create-secret/create-secret.component';
 import { ViewSecretComponent } from './secret/view-secret/view-secret.component';
 import { SignUpComponent } from './user/sign-up/sign-up.component';
+import { SignInComponent } from './user/sign-in/sign-in.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/create', pathMatch: 'full' },
@@ -18,7 +19,12 @@ export const routes: Routes = [
   },
   {
     path: 'sign_up',
-    title: 'NgPass - Create User',
+    title: 'NgPass - Sign up',
     component: SignUpComponent,
+  },
+  {
+    path: 'sign_in',
+    title: 'NgPass - Sign in',
+    component: SignInComponent,
   },
 ];
