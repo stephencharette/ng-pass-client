@@ -1,1 +1,1 @@
-<app-user-form [title]="title" [form]="form" [f]="f" [submit]="submit" class="flex flex-col"></app-user-form>
+<app-user-form [title]="title" (submitEvent)="submit($event)" class="flex flex-col"></app-user-form>
