@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { CreateSecretComponent } from './secret/create-secret/create-secret.component';
-import { ViewSecretComponent } from './secret/view-secret/view-secret.component';
-import { SignUpComponent } from './user/sign-up/sign-up.component';
-import { SignInComponent } from './user/sign-in/sign-in.component';
+import { CreateSecretComponent } from './modules/secret/create-secret/create-secret.component';
+import { ViewSecretComponent } from './modules/secret/view-secret/view-secret.component';
+import { SignUpComponent } from './modules/user/sign-up/sign-up.component';
+import { SignInComponent } from './modules/user/sign-in/sign-in.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/create', pathMatch: 'full' },

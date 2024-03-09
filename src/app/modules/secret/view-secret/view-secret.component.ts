@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Services
-import { CopyToClipboardService } from '../../services/copy-to-clipboard/copy-to-clipboard.service';
-import { RoutingService } from '../../services/routing/routing.service';
-import { RetrieveSecretService } from '../../services/retrieve-secret/retrieve-secret.service';
-import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
+import { CopyToClipboardService } from '../../../core/services/copy-to-clipboard/copy-to-clipboard.service';
+import { RoutingService } from '../../../core/services/routing/routing.service';
+import { RetrieveSecretService } from '../../../core/services/retrieve-secret/retrieve-secret.service';
+import { SnackBarService } from '../../../core/services/snack-bar/snack-bar.service';
 
 // MaterialUI
 import { FormsModule } from '@angular/forms';

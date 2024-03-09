@@ -14,9 +14,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { EXPIRATION_OPTIONS } from '../contants';
 
 // Services
-import { CreateSecretServiceService } from '../../services/create-secret/create-secret-service.service';
-import { CopyToClipboardService } from '../../services/copy-to-clipboard/copy-to-clipboard.service';
-import { SnackBarService } from '../../services/snack-bar/snack-bar.service';
+import { CreateSecretServiceService } from '../../../core/services/create-secret/create-secret-service.service';
+import { CopyToClipboardService } from '../../../core/services/copy-to-clipboard/copy-to-clipboard.service';
+import { SnackBarService } from '../../../core/services/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-create-secret',
