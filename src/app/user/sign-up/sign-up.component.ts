@@ -2,12 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // MaterialUI
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 
 import {
   AbstractControl,
@@ -21,8 +18,8 @@ import {
 
 @Component({
   selector: 'input-error-state-matcher-example',
-  templateUrl: './create-user.component.html',
-  styleUrl: './create-user.component.css',
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.css',
   standalone: true,
   imports: [
     FormsModule,
@@ -33,7 +30,7 @@ import {
     CommonModule,
   ],
 })
-export class CreateUserComponent {
+export class SignUpComponent {
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {
