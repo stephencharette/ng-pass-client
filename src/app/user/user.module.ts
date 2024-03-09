@@ -7,6 +7,6 @@ import { CreateUserComponent } from './create-user/create-user.component';
 @NgModule({
   declarations: [],
   imports: [CommonModule, CreateUserComponent, ReactiveFormsModule],
-  exports: [CreateUserComponent]
+  exports: [CreateUserComponent],
 })
 export class UserModule {}

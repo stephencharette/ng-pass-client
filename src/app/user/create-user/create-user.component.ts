@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-
 // MaterialUI
-import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -12,28 +9,45 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 
+import {
+  AbstractControl,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup
+} from '@angular/forms';
+
+
 @Component({
-  selector: 'app-create-user',
+  selector: 'input-error-state-matcher-example',
+  templateUrl: './create-user.component.html',
+  styleUrl: './create-user.component.css',
   standalone: true,
   imports: [
     FormsModule,
-    MatFormField,
-    MatLabel,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
     MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
     CommonModule,
-    MatIconModule,
   ],
-  templateUrl: './create-user.component.html',
-  styleUrl: './create-user.component.css',
 })
 export class CreateUserComponent {
-  form = this.fb.group({
-    username: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-  });
+  form: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
+  submit() {
+    console.log('Form submitted');
+  }
 }

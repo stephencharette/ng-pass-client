@@ -1,16 +1,44 @@
 <h2>Sign up</h2>
-<form>
-  <div class="flex flex-col">
-    <mat-form-field>
-      <mat-label>Username</mat-label>
-      <input matInput placeholder="Your username" name="username" formGroupName="username">
+<form [formGroup]="form" class="flex flex-col" (submit)="submit()">
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input
+      title="email"
+      matInput
+      formControlName="email"
+      type="email"
+      required
+      />
+      <mat-error>
+        @if (f['email'].errors) {
+          @if (f['email'].errors['required']) {
+            Email is required.
+          }
+          @if (f['email'].errors['email']) {
+            Email is invalid.
+          }
+        }
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input
+      title="password"
+      matInput
+      formControlName="password"
+      type="password"
+      />
+      <mat-error>
+        @if (f['password'].errors) {
+          @if (f['password'].errors['required']) {
+            Password is required.
+          }
+        }
+      </mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput type="email" placeholder="Your email" name="password" formGroupName="password">
-    </mat-form-field>
-    <div class="flex flex-col space-y-2">
-      <button type="submit" mat-raised-button color="primary">Create user</button>
-    </div>
-  </div>
+
+  <button mat-raised-button color="primary" type="submit" class="w-full" [disabled]="!form.valid">
+    Submit
+  </button>
 </form>
