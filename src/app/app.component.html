@@ -1,6 +1,19 @@
-<nav class="p-10 pb-5 max-w-2xl mx-auto flex items-center">
-  <img src="/assets/images/logo.png" alt="logo" class="w-16">
-  <h1 class="text-2xl select-none">NgPass</h1>
+<nav class="p-10 pb-5 max-w-2xl mx-auto flex items-center justify-between">
+  <div class="flex items-center">
+    <img src="/assets/images/logo.png" alt="logo" class="w-16">
+    <h1 class="text-2xl select-none">NgPass</h1>
+  </div>
+  <ng-container *ngIf="isAuthenticated$ | async; else unAuthenticated">
+    <div class="flex items-center space-x-2">
+      <app-logout-button></app-logout-button>
+      <div class="w-10 h-10 bg-purple-600 rounded-full flex">
+        <div class="text-white m-auto">SC</div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #unAuthenticated>
+    <app-login-button></app-login-button>
+  </ng-template>
 </nav>
 <main class="px-10 max-w-2xl mx-auto">
   <p>NgPass allows you to share secrets in a secure, ephemeral way. Input a single or multi-line secret, its expiration time, and click Generate URL. Share the one-time use URL with your intended recipient.</p>

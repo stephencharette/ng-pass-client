@@ -1,0 +1,12 @@
+
+<ng-container *ngIf="user; else unAuthenticated">
+  <div class="flex items-center space-x-2">
+    <div class="profile__headline">
+      <h2 class="profile__title">{{ user.name }}</h2>
+      <span class="profile__description">{{ user.email }}</span>
+    </div>
+    </div>
+  </ng-container>
+  <ng-template #unAuthenticated>
+    Loading...
+  </ng-template>
