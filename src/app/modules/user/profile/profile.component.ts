@@ -3,10 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { AuthService } from '@auth0/auth0-angular';
 
+import { SecretsComponent } from '../secrets/secrets.component';
+
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
+    SecretsComponent,
     CommonModule
   ],
   templateUrl: './profile.component.html',
