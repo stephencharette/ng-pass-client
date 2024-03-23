@@ -3,10 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AuthService } from '@auth0/auth0-angular';
-
-import { LoginButtonComponent } from './shared/components/login-button/login-button.component';
-import { LogoutButtonComponent } from './shared/components/logout-button/logout-button.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +13,7 @@ import { LogoutButtonComponent } from './shared/components/logout-button/logout-
     HttpClientModule,
     RouterLink,
     RouterLinkActive,
-    LoginButtonComponent,
-    LogoutButtonComponent,
+    NavbarComponent,
     CommonModule,
   ],
   templateUrl: './app.component.html',
@@ -25,7 +21,4 @@ import { LogoutButtonComponent } from './shared/components/logout-button/logout-
 })
 export class AppComponent {
   title = 'ng-pass';
-  isAuthenticated$ = this.authService.isAuthenticated$;
-  isAuth0Loading$ = this.authService.isLoading$;
-  constructor(private authService: AuthService) {}
 }
