@@ -1,4 +1,5 @@
 export const environment = {
+  apiUri: 'https://localhost:7097',
   auth0: {
     domain: 'dev-bsqg144ejnqmz325.us.auth0.com',
     clientId: 'TtUU6M7qe9t6AHs78IwDOqkyvx7tKcQ9',

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewSecretComponent } from './view-secret.component';
+import { RevealSecretComponent } from './reveal-secret.component';
 
-describe('ViewSecretComponent', () => {
-  let component: ViewSecretComponent;
-  let fixture: ComponentFixture<ViewSecretComponent>;
+describe('RevealSecretComponent', () => {
+  let component: RevealSecretComponent;
+  let fixture: ComponentFixture<RevealSecretComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ViewSecretComponent]
+      imports: [RevealSecretComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ViewSecretComponent);
+    fixture = TestBed.createComponent(RevealSecretComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

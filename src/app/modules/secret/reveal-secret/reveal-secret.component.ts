@@ -1,23 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// Services
 import { CopyToClipboardService } from '../../../core/services/copy-to-clipboard/copy-to-clipboard.service';
 import { RoutingService } from '../../../core/services/routing/routing.service';
-import { RetrieveSecretService } from '../../../core/services/retrieve-secret/retrieve-secret.service';
 import { SnackBarService } from '../../../core/services/snack-bar/snack-bar.service';
-
-// MaterialUI
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { FormGroupType } from '../../../core/models/form-group-type';
+import { SecretService } from '../shared/services/secret-service/secret.service';
+import { Subject, takeUntil, tap } from 'rxjs';
+import { RevealSecretRequest } from './models/reveal-secret-request';
+import { RevealSecretResponse } from './models/reveal-secret-response';
 
 @Component({
-  selector: 'app-view-secret',
+  selector: 'app-reveal-secret',
   standalone: true,
   imports: [
     FormsModule,
@@ -29,20 +29,33 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     MatRippleModule,
     MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
-  templateUrl: './view-secret.component.html',
-  styleUrl: './view-secret.component.css',
-  providers: [RetrieveSecretService],
+  templateUrl: './reveal-secret.component.html',
+  styleUrl: './reveal-secret.component.css',
 })
-export class ViewSecretComponent {
+export class RevealSecretComponent implements OnDestroy {
   key: string = '';
   revealButtonDisabled: boolean = false;
   secret: string = '';
   status: undefined | number;
 
+  private destroy$ = new Subject<void>();
+
+  form: FormGroup<FormGroupType<RevealSecretRequest>> = new FormGroup<FormGroupType<RevealSecretRequest>>({
+    guid: new FormControl<string | null>(null, Validators.required),
+    passphrase: new FormControl<string | null>(null, Validators.minLength(3)),
+  });
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   constructor(
     private routingService: RoutingService,
-    private retrieveSecretService: RetrieveSecretService,
+    private secretService: SecretService,
     private copyToClipboardService: CopyToClipboardService,
     private snackBarService: SnackBarService
   ) {
@@ -52,9 +65,9 @@ export class ViewSecretComponent {
   /**
    * Set the key from the query parameter
    */
-  setKey() {
+  setKey(): void {
     this.routingService.getQueryParam('key').subscribe((key) => {
-      this.key = key;
+      this.form.controls.guid.setValue(key); 
     });
   }
 
@@ -71,29 +84,20 @@ export class ViewSecretComponent {
   }
 
   /**
-   * Toggle the reveal button's disabled state
-   * @param toggle - whether to disable the reveal button
-   */
-  toggleRevealButtonDisabled(toggle: boolean) {
-    this.revealButtonDisabled = toggle;
-  }
-
-  /**
-   * Retrieve the secret from the server and set the secret and status
+   * Retrieve the secret from the server
    */
   retrieveSecret() {
-    this.retrieveSecretService.retrieveSecret(this.key).subscribe({
-      next: (secretObj) => {
-        this.status = 200;
-        this.secret = secretObj.key;
-        this.toggleRevealButtonDisabled(true);
-      },
-      error: (e) => {
-        if (e.status === 404) {
-          this.toggleRevealButtonDisabled(true);
-        }
-        this.status = e.status;
-      },
-    });
+    const request = this.generateRequestObject();
+
+    this.secretService.revealSecret(request).pipe(
+      takeUntil(this.destroy$),
+      tap((response: RevealSecretResponse) => {
+        this.secret = response.password;
+      })
+    ).subscribe();
+  }
+
+  generateRequestObject(): RevealSecretRequest {
+    return this.form.value as RevealSecretRequest;
   }
 }

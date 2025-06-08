@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-
-import { CreateSecretServiceService } from './create-secret-service.service';
+import { SecretService } from './secret.service';
 
 describe('CreateSecretServiceService', () => {
-  let service: CreateSecretServiceService;
+  let service: SecretService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CreateSecretServiceService);
+    service = TestBed.inject(SecretService);
   });
 
   it('should be created', () => {

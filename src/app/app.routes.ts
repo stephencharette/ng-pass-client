@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from '@auth0/auth0-angular';
 
 import { CreateSecretComponent } from './modules/secret/create-secret/create-secret.component';
-import { ViewSecretComponent } from './modules/secret/view-secret/view-secret.component';
+import { RevealSecretComponent } from './modules/secret/reveal-secret/reveal-secret.component';
 import { ProfileComponent } from './modules/user/profile/profile.component';
 
 export const routes: Routes = [
@@ -13,9 +13,9 @@ export const routes: Routes = [
     component: CreateSecretComponent,
   },
   {
-    path: 'view',
+    path: 'reveal',
     title: 'NgPass - View Secret',
-    component: ViewSecretComponent,
+    component: RevealSecretComponent,
   },
   {
     path: 'profile',
