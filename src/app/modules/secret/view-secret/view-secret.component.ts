@@ -39,14 +39,13 @@ export class ViewSecretComponent {
   revealButtonDisabled: boolean = false;
   secret: string = '';
   status: undefined | number;
+
   constructor(
     private routingService: RoutingService,
     private retrieveSecretService: RetrieveSecretService,
     private copyToClipboardService: CopyToClipboardService,
     private snackBarService: SnackBarService
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.setKey();
   }
 

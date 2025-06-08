@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 @Component({
@@ -11,8 +10,6 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
   imports: [
     RouterOutlet,
     HttpClientModule,
-    RouterLink,
-    RouterLinkActive,
     NavbarComponent,
     CommonModule,
   ],

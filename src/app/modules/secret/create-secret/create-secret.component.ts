@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 
 // Constants
-import { EXPIRATION_OPTIONS } from '../contants';
+import { DEFAULT_SECRET_EXPIRATION, SECRET_EXPIRATION_OPTIONS } from '../shared/constants/secret-expiration-options';
 
 // Services
 import { CreateSecretServiceService } from '../../../core/services/create-secret/create-secret-service.service';
@@ -37,7 +37,7 @@ import { SnackBarService } from '../../../core/services/snack-bar/snack-bar.serv
   styleUrl: './create-secret.component.css',
 })
 export class CreateSecretComponent {
-  expiration = EXPIRATION_OPTIONS[2].expiration;
+  expiration = DEFAULT_SECRET_EXPIRATION;
   failure: boolean = false;
   generateButtonDisabled: boolean = true;
   secret: undefined | string;
@@ -65,7 +65,7 @@ export class CreateSecretComponent {
    * @returns expiration options
    */
   getExpirationOptions() {
-    return EXPIRATION_OPTIONS;
+    return SECRET_EXPIRATION_OPTIONS;
   }
 
   /**
@@ -79,7 +79,7 @@ export class CreateSecretComponent {
    * Toggle the generate button's disabled state
    * @param disabled whether the button should be disabled or not
    */
-  toggleGenerateButtonDisabled(disabled: boolean) {
+  private toggleGenerateButtonDisabled(disabled: boolean) {
     this.generateButtonDisabled = disabled;
   }
 
