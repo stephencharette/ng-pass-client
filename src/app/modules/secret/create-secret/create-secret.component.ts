@@ -32,7 +32,7 @@ import { CreateSecretResponse } from './models/create-secret-response';
         ReactiveFormsModule,
     ],
     templateUrl: './create-secret.component.html',
-    styleUrl: './create-secret.component.css'
+    styleUrl: './create-secret.component.scss'
 })
 export class CreateSecretComponent implements OnDestroy {
   expiration = DEFAULT_SECRET_EXPIRATION;

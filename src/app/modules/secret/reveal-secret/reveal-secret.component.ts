@@ -32,7 +32,7 @@ import { RevealSecretResponse } from './models/reveal-secret-response';
         ReactiveFormsModule,
     ],
     templateUrl: './reveal-secret.component.html',
-    styleUrl: './reveal-secret.component.css'
+    styleUrl: './reveal-secret.component.scss'
 })
 export class RevealSecretComponent implements OnDestroy {
   key: string = '';

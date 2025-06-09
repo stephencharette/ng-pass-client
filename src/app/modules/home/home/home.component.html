@@ -1,2 +1,7 @@
-<app-create-secret></app-create-secret>
-<app-secret-management></app-secret-management>
+<div class="flex flex-col space-y-7">
+    <app-create-secret></app-create-secret>
+
+    @if(isAuthenticated$ | async) {
+        <app-secret-management></app-secret-management>
+    }
+</div>
