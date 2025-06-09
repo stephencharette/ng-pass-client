@@ -3,13 +3,12 @@ import { CreateSecretComponent } from '../../secret/create-secret/create-secret.
 import { SecretManagementComponent } from '../../secret/secret-management/secret-management.component';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [
-    CreateSecretComponent,
-    SecretManagementComponent
-  ],
-  templateUrl: './home.component.html',
+    selector: 'app-home',
+    imports: [
+        CreateSecretComponent,
+        SecretManagementComponent
+    ],
+    templateUrl: './home.component.html'
 })
 export class HomeComponent {
 

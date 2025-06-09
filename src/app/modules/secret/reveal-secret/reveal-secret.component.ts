@@ -17,23 +17,22 @@ import { RevealSecretRequest } from './models/reveal-secret-request';
 import { RevealSecretResponse } from './models/reveal-secret-response';
 
 @Component({
-  selector: 'app-reveal-secret',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatFormField,
-    MatLabel,
-    MatInputModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    CommonModule,
-    MatRippleModule,
-    MatIconModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './reveal-secret.component.html',
-  styleUrl: './reveal-secret.component.css',
+    selector: 'app-reveal-secret',
+    imports: [
+        FormsModule,
+        MatFormField,
+        MatLabel,
+        MatInputModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        CommonModule,
+        MatRippleModule,
+        MatIconModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './reveal-secret.component.html',
+    styleUrl: './reveal-secret.component.css'
 })
 export class RevealSecretComponent implements OnDestroy {
   key: string = '';

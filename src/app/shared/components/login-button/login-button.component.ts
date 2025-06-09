@@ -4,13 +4,12 @@ import { AuthService } from '@auth0/auth0-angular';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-login-button',
-  standalone: true,
-  imports: [
-    MatButton
-  ],
-  templateUrl: './login-button.component.html',
-  styleUrl: './login-button.component.css',
+    selector: 'app-login-button',
+    imports: [
+        MatButton
+    ],
+    templateUrl: './login-button.component.html',
+    styleUrl: './login-button.component.css'
 })
 export class LoginButtonComponent {
   constructor(private auth: AuthService) {}

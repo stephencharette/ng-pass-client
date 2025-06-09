@@ -4,10 +4,9 @@ import { SecretGridResponse } from './models/secret-grid-response';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-secret-management',
-  standalone: true,
-  imports: [],
-  templateUrl: './secret-management.component.html',
+    selector: 'app-secret-management',
+    imports: [],
+    templateUrl: './secret-management.component.html'
 })
 export class SecretManagementComponent implements OnInit, OnDestroy {
   response: SecretGridResponse[] = [];

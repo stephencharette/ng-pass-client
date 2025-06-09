@@ -17,23 +17,22 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { CreateSecretResponse } from './models/create-secret-response';
 
 @Component({
-  selector: 'app-create-secret',
-  standalone: true,
-  imports: [
-    MatFormField,
-    MatLabel,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    FormsModule,
-    CommonModule,
-    MatIconModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './create-secret.component.html',
-  styleUrl: './create-secret.component.css',
+    selector: 'app-create-secret',
+    imports: [
+        MatFormField,
+        MatLabel,
+        MatSelectModule,
+        MatInputModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        FormsModule,
+        CommonModule,
+        MatIconModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './create-secret.component.html',
+    styleUrl: './create-secret.component.css'
 })
 export class CreateSecretComponent implements OnDestroy {
   expiration = DEFAULT_SECRET_EXPIRATION;

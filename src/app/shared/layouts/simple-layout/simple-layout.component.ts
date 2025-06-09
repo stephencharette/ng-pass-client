@@ -4,14 +4,13 @@ import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
-  selector: 'app-simple-layout',
-  standalone: true,
-  imports: [
-    RouterModule,
-    NavbarComponent,
-    CommonModule,
-  ],
-  templateUrl: './simple-layout.component.html'
+    selector: 'app-simple-layout',
+    imports: [
+        RouterModule,
+        NavbarComponent,
+        CommonModule,
+    ],
+    templateUrl: './simple-layout.component.html'
 })
 export class SimpleLayoutComponent {
 
