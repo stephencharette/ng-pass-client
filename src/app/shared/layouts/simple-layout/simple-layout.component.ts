@@ -10,6 +10,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
         NavbarComponent,
         CommonModule,
     ],
+    standalone: true,
     templateUrl: './simple-layout.component.html'
 })
 export class SimpleLayoutComponent {

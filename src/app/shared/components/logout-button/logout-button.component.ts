@@ -7,8 +7,8 @@ import { MatButton } from '@angular/material/button';
 @Component({
     selector: 'app-logout-button',
     imports: [MatButton],
+    standalone: true,
     templateUrl: './logout-button.component.html',
-    styleUrl: './logout-button.component.css'
 })
 export class LogoutButtonComponent {
   constructor(

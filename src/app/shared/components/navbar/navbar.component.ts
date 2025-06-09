@@ -6,9 +6,9 @@ import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
     selector: 'app-navbar',
+    standalone: true,
     imports: [LoginButtonComponent, LogoutButtonComponent, CommonModule],
     templateUrl: './navbar.component.html',
-    styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
   isAuthenticated$ = this.authService.isAuthenticated$;

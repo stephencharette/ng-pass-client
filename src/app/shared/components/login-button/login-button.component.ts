@@ -8,8 +8,8 @@ import { MatButton } from '@angular/material/button';
     imports: [
         MatButton
     ],
+    standalone: true,
     templateUrl: './login-button.component.html',
-    styleUrl: './login-button.component.css'
 })
 export class LoginButtonComponent {
   constructor(private auth: AuthService) {}
