@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '@auth0/auth0-angular';
 import { LoginButtonComponent } from '../login-button/login-button.component';
 import { LogoutButtonComponent } from '../logout-button/logout-button.component';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +16,7 @@ export class NavbarComponent {
   isAuth0Loading$ = this.authService.isLoading$;
   user: any;
   
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   public ngOnInit(): void {
     this.authService.user$.subscribe((user) => {
