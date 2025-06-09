@@ -5,6 +5,7 @@ import { CreateSecretRequest } from '../../../create-secret/models/create-secret
 import { CreateSecretResponse } from '../../../create-secret/models/create-secret-response';
 import { RevealSecretRequest } from '../../../reveal-secret/models/reveal-secret-request';
 import { RevealSecretResponse } from '../../../reveal-secret/models/reveal-secret-response';
+import { SecretGridResponse } from '../../../secret-management/models/secret-grid-response';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +19,9 @@ export class SecretService {
 
   revealSecret(request: RevealSecretRequest): Observable<RevealSecretResponse> {
     return this.http.post<RevealSecretResponse>('api/secrets/reveal', request);
+  }
+
+  getSecretsCreatedByUser(): Observable<SecretGridResponse[]> {
+    return this.http.get<SecretGridResponse[]>('api/secrets');
   }
 }

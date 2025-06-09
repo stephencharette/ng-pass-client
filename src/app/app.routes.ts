@@ -1,26 +1,25 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from '@auth0/auth0-angular';
-
 import { CreateSecretComponent } from './modules/secret/create-secret/create-secret.component';
 import { RevealSecretComponent } from './modules/secret/reveal-secret/reveal-secret.component';
-import { ProfileComponent } from './modules/user/profile/profile.component';
+import { SimpleLayoutComponent } from './shared/layouts/simple-layout/simple-layout.component';
+import { HomeComponent } from './modules/home/home/home.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/create', pathMatch: 'full' },
-  {
-    path: 'create',
-    title: 'NgPass - New Secret',
-    component: CreateSecretComponent,
+  { 
+    path: '', 
+    component: SimpleLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: HomeComponent,
+        pathMatch: 'full',
+      }
+    ]
   },
   {
     path: 'reveal',
     title: 'NgPass - View Secret',
     component: RevealSecretComponent,
-  },
-  {
-    path: 'profile',
-    component: ProfileComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: '**',
