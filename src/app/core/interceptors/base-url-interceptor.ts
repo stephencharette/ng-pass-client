@@ -42,16 +42,19 @@ export class BaseUrlInterceptor implements HttpInterceptor {
         request: HttpRequest<any>,
         next: HttpHandler,
     ) {
-        const token = await this.getAuthBearerToken();
-        const apiRequest = request.clone({
-            url: `${this.baseApiUrl}/${request.url}`,
-            headers: request.headers
-                .set('Content-Type', 'application/json')
-                .set('Authorization', `Bearer ${token}`),
-        });
+        const token = await this.tryGetAuthBearerToken();
+
+        if(token) {
+            request = request.clone({
+                url: `${this.baseApiUrl}/${request.url}`,
+                headers: request.headers
+                    .set('Content-Type', 'application/json')
+                    .set('Authorization', `Bearer ${token}`)
+            });
+        }
 
         return lastValueFrom(
-            next.handle(apiRequest).pipe(
+            next.handle(request).pipe(
                 catchError((error) => {
                     this.handleErrorAlert(error);
                     return throwError(error);
@@ -75,16 +78,17 @@ export class BaseUrlInterceptor implements HttpInterceptor {
 
     /**
      * Gets the Auth0 Bearer token from the Auth0 service.
-     * @returns either the token or an error if the token is not found
+     * @returns either the token or null if the token is not found
      */
-    public async getAuthBearerToken(): Promise<any> {
-        return new Promise<string>((resolve, reject) => {
+    public async tryGetAuthBearerToken(): Promise<string | null> {
+        return new Promise<string | null>((resolve, reject) => {
             this.auth0Service.idTokenClaims$.subscribe((claims) => {
                 if (claims && claims.__raw) {
                     resolve(claims.__raw);
                 } else {
-                    reject(new Error('Bearer token not found'));
+                    return resolve(null);
                 }
+
             });
         });
     }

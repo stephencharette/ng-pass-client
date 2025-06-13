@@ -16,160 +16,136 @@ import * as signalR from '@microsoft/signalr';
     templateUrl: './secret-management.component.html'
 })
 export class SecretManagementComponent implements OnInit, OnDestroy {
-  messages$: Observable<{user: string, message: string}[]>;
-  connectionState$: Observable<signalR.HubConnectionState>;
-  isConnected = false;
-  errorMessage = '';
-  notifications: any[] = [];
-  secrets: SecretGridResponse[] = [];
-  
-  private subscriptions = new Subscription();
-  private apiUrl = 'https://localhost:7097'; // Replace with your API URL
-  
-  response: SecretGridResponse[] = [];
+    messages$: Observable<{ user: string, message: string }[]>;
+    connectionState$: Observable<signalR.HubConnectionState>;
+    isConnected = false;
+    errorMessage = '';
+    secrets: SecretGridResponse[] = [];
 
-  $destroy = new Subject<void>();
+    private subscriptions = new Subscription();
+    private apiUrl = 'https://localhost:7097'; // Replace with your API URL and move away
 
-  colDef: ColDef[] = [
-    {
-      field: nameOf<SecretGridResponse>('createdAt'),
-      headerName: 'Created At',
-      valueFormatter: (params) => {
-        const date = new Date(params.value);
-        return date.toLocaleString();
-      }
-    },
-    { 
-      field: nameOf<SecretGridResponse>('ttl'),
-      headerName: 'Expiration'
-    },
-    { 
-      field: nameOf<SecretGridResponse>('guid'),
-      valueFormatter: (params) => {
-        const guid = params.value;
-        return `localhost:4200/reveal?key=${guid}`; // TODO: replace w environment variable
-      }
-    }
-  ];
+    response: SecretGridResponse[] = [];
 
-  gridOptions: GridOptions = {
-    columnDefs: this.colDef,
-  };
-  
-  gridApi: GridApi;
+    $destroy = new Subject<void>();
 
-  constructor(
-    private readonly secretService: SecretService,
-    private readonly signalRService: SecretsSignalRService,
-    private readonly http: HttpClient
-  ) { }
-
-  ngOnInit(): void {
-    this.getSecrets();
-    this.setupSignalRSubscriptions();
-    this.connectToHub();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-    this.signalRService.stopConnection();
-    this.$destroy.next();
-    this.$destroy.complete();
-  }
-
-  private setupSignalRSubscriptions(): void {
-    // Connection state subscription
-    this.subscriptions.add(
-      this.signalRService.getConnectionState().subscribe(state => {
-        this.isConnected = state === signalR.HubConnectionState.Connected;
-        if (this.isConnected) {
-          this.refreshSecrets();
+    colDef: ColDef[] = [
+        {
+            field: nameOf<SecretGridResponse>('createdAt'),
+            headerName: 'Created At',
+            valueFormatter: (params) => {
+                const date = new Date(params.value);
+                return date.toLocaleString();
+            }
+        },
+        {
+            field: nameOf<SecretGridResponse>('ttl'),
+            headerName: 'Expiration'
+        },
+        {
+            field: nameOf<SecretGridResponse>('guid'),
+            valueFormatter: (params) => {
+                const guid = params.value;
+                return `localhost:4200/reveal?key=${guid}`; // TODO: replace w environment variable
+            }
         }
-      })
-    );
+    ];
 
-    // Secret created subscription
-    this.subscriptions.add(
-      this.signalRService.onSecretCreated().subscribe(secretData => {
-        this.addNotification(`Secret "${secretData.id}" was created`, 'created');
-        this.refreshSecrets(); // Refresh the list
-      })
-    );
+    gridOptions: GridOptions = {
+        columnDefs: this.colDef,
+    };
 
-    // Secret deleted subscription
-    this.subscriptions.add(
-      this.signalRService.onSecretDeleted().subscribe(secretData => {
-        this.addNotification(`Secret with ID ${secretData.id} was deleted`, 'deleted');
-        this.secrets = this.secrets.filter(s => s.guid !== secretData.id);
-      })
-    );
+    gridApi: GridApi;
 
-    // Secrets list received subscription
-    this.subscriptions.add(
-      this.signalRService.onSecretsListReceived().subscribe(secrets => {
-        this.response = secrets;
+    constructor(
+        private readonly secretService: SecretService,
+        private readonly signalRService: SecretsSignalRService,
+        private readonly http: HttpClient
+    ) { }
 
+    ngOnInit(): void {
+        this.getSecrets();
+        this.setupSignalRSubscriptions();
+        this.connectToHub();
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
+        this.signalRService.stopConnection();
+
+        this.$destroy.next();
+        this.$destroy.complete();
+    }
+
+    private setupSignalRSubscriptions(): void {
+        this.signalRService.connectionState$
+            .pipe(takeUntil(this.$destroy),
+                tap(state => {
+                    this.isConnected = state === signalR.HubConnectionState.Connected;
+                    if (this.isConnected) {
+                        this.refreshSecrets();
+                    }
+                })).subscribe();
+
+        this.signalRService.secretCreated$.pipe(
+            takeUntil(this.$destroy),
+            tap(secretData => {
+                this.refreshSecrets();
+            })
+        ).subscribe();
+
+        this.signalRService.secretDeleted$.pipe(
+            takeUntil(this.$destroy),
+            tap(secretData => {
+                this.refreshSecrets();
+            })
+        ).subscribe();
+
+        this.signalRService.secretsListReceived$.pipe(
+            takeUntil(this.$destroy),
+            tap(secrets => {
+                this.response = secrets;
+                this.updateGrid();
+            })
+        ).subscribe();
+    }
+
+    private async connectToHub(): Promise<void> {
+        try {
+            await this.signalRService.startConnection(this.apiUrl); // Replace with your API URL
+        } catch (error) {
+            console.error('Failed to connect to SignalR hub:', error);
+            this.errorMessage = 'Failed to connect to real-time updates';
+        }
+    }
+
+    refreshSecrets(): void {
+        if (this.isConnected) {
+            this.signalRService.requestSecretsList();
+        } else {
+            // Fallback to HTTP call if SignalR is not connected
+            this.getSecrets();
+        }
+    }
+
+    onGridReady(
+        params: GridReadyEvent
+    ) {
+        this.gridApi = params.api;
         this.updateGrid();
-      })
-    );
-
-    // Error subscription
-    this.subscriptions.add(
-      this.signalRService.onError().subscribe(error => {
-        this.errorMessage = error;
-      })
-    );
-  }
-
-  private async connectToHub(): Promise<void> {
-    try {
-      await this.signalRService.startConnection('https://localhost:7097'); // Replace with your API URL
-    } catch (error) {
-      console.error('Failed to connect to SignalR hub:', error);
-      this.errorMessage = 'Failed to connect to real-time updates';
     }
-  }
 
-  refreshSecrets(): void {
-    if (this.isConnected) {
-      this.signalRService.requestSecretsList();
-    } else {
-      // Fallback to HTTP call if SignalR is not connected
-      this.getSecrets();
+    private updateGrid(): void {
+        this.gridApi.setGridOption('rowData', this.response);
     }
-  }
 
-  private addNotification(message: string, type: string): void {
-    this.notifications.unshift({
-      message,
-      type,
-      timestamp: new Date()
-    });
-
-    // Keep only the last 5 notifications
-    if (this.notifications.length > 5) {
-      this.notifications = this.notifications.slice(0, 5);
+    private getSecrets(): void {
+        this.secretService.getSecretsCreatedByUser().pipe(
+            takeUntil(this.$destroy),
+            tap((response: SecretGridResponse[]) => {
+                this.response = response;
+                console.log('Secrets fetched successfully:', this.response);
+            })
+        ).subscribe();
     }
-  }
-
-  onGridReady(
-      params: GridReadyEvent
-  ) {
-      this.gridApi = params.api;
-      this.updateGrid();
-  }
-
-  private updateGrid(): void {
-    this.gridApi.setGridOption('rowData', this.response);
-  }
-
-  private getSecrets(): void {
-    this.secretService.getSecretsCreatedByUser().pipe(
-      takeUntil(this.$destroy),
-      tap((response: SecretGridResponse[]) => {
-        this.response = response;
-        console.log('Secrets fetched successfully:', this.response);
-      })
-    ).subscribe();
-  }
 }
