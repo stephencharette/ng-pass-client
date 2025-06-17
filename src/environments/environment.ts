@@ -1,4 +1,5 @@
 export const environment = {
+  clientUri: '',
   apiUri: '',
   auth0: {
     domain: 'dev-bsqg144ejnqmz325.us.auth0.com',

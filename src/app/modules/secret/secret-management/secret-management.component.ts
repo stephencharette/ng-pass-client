@@ -7,8 +7,12 @@ import { nameOf } from '../../../core/functions/string-helpers';
 import { ColDef, GridOptions, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { CommonModule } from '@angular/common';
 import { SecretsSignalRService } from '../shared/services/secrets-signal-r/secrets-signal-r.service';
-import { HttpClient } from '@angular/common/http';
 import * as signalR from '@microsoft/signalr';
+import { ButtonCellRendererComponent } from '../../../shared/components/grid/button-cell-renderer/button-cell-renderer.component';
+import { ButtonCellRendererParams } from '../../../shared/components/grid/button-cell-renderer/models/button-cell-renderer-params';
+import { CopyToClipboardService } from '../../../core/services/copy-to-clipboard/copy-to-clipboard.service';
+import { RouteConstants } from '../../../core/constants/routes';
+import { SecretUrlService } from '../shared/services/secret-url/secret-url.service';
 
 @Component({
     selector: 'app-secret-management',
@@ -46,9 +50,23 @@ export class SecretManagementComponent implements OnInit, OnDestroy {
             field: nameOf<SecretGridResponse>('guid'),
             valueFormatter: (params) => {
                 const guid = params.value;
-                return `localhost:4200/reveal?key=${guid}`; // TODO: replace w environment variable
+                return this.secretUrlService.getFullRevealUrl(guid);
             }
-        }
+        },
+        {
+            headerName: 'URL',
+            maxWidth: 96,
+            filter: false,
+            sortable: false,
+            cellRenderer: ButtonCellRendererComponent,
+            cellRendererParams: {
+                classList: '!rounded-full',
+                matIconIdentifier: 'content_copy',
+                iconClassList: '!m-0',
+                clickFunction: (params: ButtonCellRendererParams) =>
+                    this.copyUrlToClipboard(params)
+            },
+        },
     ];
 
     gridOptions: GridOptions = {
@@ -60,7 +78,8 @@ export class SecretManagementComponent implements OnInit, OnDestroy {
     constructor(
         private readonly secretService: SecretService,
         private readonly signalRService: SecretsSignalRService,
-        private readonly http: HttpClient
+        private readonly copyToClipboardService: CopyToClipboardService,
+        private readonly secretUrlService: SecretUrlService
     ) { }
 
     ngOnInit(): void {
@@ -76,6 +95,36 @@ export class SecretManagementComponent implements OnInit, OnDestroy {
         this.$destroy.next();
         this.$destroy.complete();
     }
+
+    refreshSecrets(): void {
+        if (this.isConnected) {
+            this.signalRService.requestSecretsList();
+        } else {
+            // Fallback to HTTP call if SignalR is not connected
+            this.getSecrets();
+        }
+    }
+
+    onGridReady(
+        params: GridReadyEvent
+    ) {
+        this.gridApi = params.api;
+        this.updateGrid();
+    }
+
+    private copyUrlToClipboard(params: ButtonCellRendererParams): void {
+        const rowIndex = params.node.rowIndex;
+        if(rowIndex === null) {
+            return;
+        }
+
+        const secret = this.response[rowIndex];
+
+        this.copyToClipboardService.copyToClipboard(
+            this.secretUrlService.getFullRevealUrl(secret.guid)
+        )
+    }
+
 
     private setupSignalRSubscriptions(): void {
         this.signalRService.connectionState$
@@ -117,22 +166,6 @@ export class SecretManagementComponent implements OnInit, OnDestroy {
             console.error('Failed to connect to SignalR hub:', error);
             this.errorMessage = 'Failed to connect to real-time updates';
         }
-    }
-
-    refreshSecrets(): void {
-        if (this.isConnected) {
-            this.signalRService.requestSecretsList();
-        } else {
-            // Fallback to HTTP call if SignalR is not connected
-            this.getSecrets();
-        }
-    }
-
-    onGridReady(
-        params: GridReadyEvent
-    ) {
-        this.gridApi = params.api;
-        this.updateGrid();
     }
 
     private updateGrid(): void {

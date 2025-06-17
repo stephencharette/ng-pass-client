@@ -1,0 +1,21 @@
+<button
+    color="primary"
+    [class]="params.classList"
+    (click)="click()"
+    type="button"
+    mat-flat-button
+>
+    @if (showMatIcon) {
+        <mat-icon [class]="params.iconClassList">{{
+            params.matIconIdentifier
+        }}</mat-icon>
+    } @else if (showLocalIcon) {
+        <img
+            alt="{{ params.iconAlt }}"
+            [src]="params.iconUri"
+            [class]="params.iconClassList"
+        />
+    }
+
+    {{ params.label }}
+</button>

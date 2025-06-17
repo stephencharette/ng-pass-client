@@ -1,28 +1,31 @@
 import { Routes } from '@angular/router';
-import { CreateSecretComponent } from './modules/secret/create-secret/create-secret.component';
 import { RevealSecretComponent } from './modules/secret/reveal-secret/reveal-secret.component';
 import { SimpleLayoutComponent } from './shared/layouts/simple-layout/simple-layout.component';
 import { HomeComponent } from './modules/home/home/home.component';
+import { RouteConstants } from './core/constants/routes';
 
 export const routes: Routes = [
   { 
-    path: '', 
+    // path: 'secrets', 
+    path: RouteConstants.Secret.rootUrl, 
     component: SimpleLayoutComponent,
     children: [
       {
-        path: '',
+        // path: 'new',
+        path: RouteConstants.Secret.new,
         component: HomeComponent,
         pathMatch: 'full',
       },
       {
-        path: 'reveal',
-        title: 'NgPass - View Secret',
+        // path: ':id/reveal',
+        path: RouteConstants.Secret.reveal,
         component: RevealSecretComponent,
-      },
+        pathMatch: 'full',
+      }
     ]
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: RouteConstants.Secret.getFullRoute('new'),
   },
 ];

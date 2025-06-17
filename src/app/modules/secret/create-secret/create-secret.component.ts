@@ -15,6 +15,7 @@ import { CreateSecretRequest } from '../create-secret/models/create-secret-reque
 import { FormGroupType } from '../../../core/models/form-group-type';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { CreateSecretResponse } from './models/create-secret-response';
+import { SecretUrlService } from '../shared/services/secret-url/secret-url.service';
 
 @Component({
     selector: 'app-create-secret',
@@ -50,9 +51,10 @@ export class CreateSecretComponent implements OnDestroy {
   });
 
   constructor(
-    private secretService: SecretService,
-    private copyToClipboardService: CopyToClipboardService,
-    private snackBarService: SnackBarService
+    private readonly secretService: SecretService,
+    private readonly copyToClipboardService: CopyToClipboardService,
+    private readonly snackBarService: SnackBarService,
+    private readonly secretUrlService: SecretUrlService
   ) {}
 
   ngOnDestroy(): void {
@@ -92,8 +94,7 @@ export class CreateSecretComponent implements OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap((response: CreateSecretResponse) => {
-          console.info(response);
-          this.shareSecretUri = `localhost:4200/reveal?key=${response.guid}`;
+          this.shareSecretUri = this.secretUrlService.getFullRevealUrl(response.guid);
         })
       ).subscribe();
   }

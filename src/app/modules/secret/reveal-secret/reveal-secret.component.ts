@@ -12,9 +12,11 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { FormGroupType } from '../../../core/models/form-group-type';
 import { SecretService } from '../shared/services/secret-service/secret.service';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { map, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { RevealSecretRequest } from './models/reveal-secret-request';
 import { RevealSecretResponse } from './models/reveal-secret-response';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { RouteConstants } from '../../../core/constants/routes';
 
 @Component({
     selector: 'app-reveal-secret',
@@ -35,7 +37,6 @@ import { RevealSecretResponse } from './models/reveal-secret-response';
     styleUrl: './reveal-secret.component.scss'
 })
 export class RevealSecretComponent implements OnDestroy {
-  key: string = '';
   revealButtonDisabled: boolean = false;
   secret: string = '';
   status: undefined | number;
@@ -52,22 +53,24 @@ export class RevealSecretComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  constructor(
-    private routingService: RoutingService,
-    private secretService: SecretService,
-    private copyToClipboardService: CopyToClipboardService,
-    private snackBarService: SnackBarService
-  ) {
-    this.setKey();
+  ngOnInit(): void {
+    this.route.paramMap.pipe(
+      map(params => params.get('id')),
+      takeUntil(this.destroy$),
+      tap((guid: string | null) => {
+        if (guid) {
+          this.form.controls.guid.patchValue(guid);
+        }
+      }),
+    ).subscribe();
   }
 
-  /**
-   * Set the key from the query parameter
-   */
-  setKey(): void {
-    this.routingService.getQueryParam('key').subscribe((key) => {
-      this.form.controls.guid.setValue(key); 
-    });
+  constructor(
+    private readonly secretService: SecretService,
+    private readonly copyToClipboardService: CopyToClipboardService,
+    private readonly snackBarService: SnackBarService,
+    private readonly route: ActivatedRoute
+  ) {
   }
 
   /**
