@@ -13,6 +13,7 @@ import { ButtonCellRendererParams } from '../../../shared/components/grid/button
 import { CopyToClipboardService } from '../../../core/services/copy-to-clipboard/copy-to-clipboard.service';
 import { RouteConstants } from '../../../core/constants/routes';
 import { SecretUrlService } from '../shared/services/secret-url/secret-url.service';
+import { SnackBarService } from '../../../core/services/snack-bar/snack-bar.service';
 
 @Component({
     selector: 'app-secret-management',
@@ -40,17 +41,26 @@ export class SecretManagementComponent implements OnInit, OnDestroy {
             valueFormatter: (params) => {
                 const date = new Date(params.value);
                 return date.toLocaleString();
-            }
+            },
+            sort: 'desc',
         },
         {
-            field: nameOf<SecretGridResponse>('ttl'),
-            headerName: 'Expiration'
-        },
-        {
-            field: nameOf<SecretGridResponse>('guid'),
-            valueFormatter: (params) => {
-                const guid = params.value;
-                return this.secretUrlService.getFullRevealUrl(guid);
+            headerName: 'Expires At',
+            valueGetter: (params) => {
+                const secret = params.data as SecretGridResponse;
+                const createdAt = params.data.createdAt ? new Date(params.data.createdAt) : new Date();
+                let expiresAt;
+
+                if (secret.ttl === "day") {
+                    expiresAt = createdAt.setDate(createdAt.getDate() + 1);
+                }
+                else if (secret.ttl === "week") {
+                    expiresAt = createdAt.setDate(createdAt.getDate() + 7);
+                } else if(secret.ttl === "month") {
+                    expiresAt = createdAt.setMonth(createdAt.getMonth() + 1);
+                }
+
+                return expiresAt ? new Date(expiresAt).toLocaleString() : 'Never';
             }
         },
         {
@@ -59,6 +69,7 @@ export class SecretManagementComponent implements OnInit, OnDestroy {
             filter: false,
             sortable: false,
             cellRenderer: ButtonCellRendererComponent,
+            pinned: 'right',
             cellRendererParams: {
                 classList: '!rounded-full',
                 matIconIdentifier: 'content_copy',
@@ -79,7 +90,8 @@ export class SecretManagementComponent implements OnInit, OnDestroy {
         private readonly secretService: SecretService,
         private readonly signalRService: SecretsSignalRService,
         private readonly copyToClipboardService: CopyToClipboardService,
-        private readonly secretUrlService: SecretUrlService
+        private readonly secretUrlService: SecretUrlService,
+        private readonly snackBarService: SnackBarService
     ) { }
 
     ngOnInit(): void {
@@ -122,7 +134,9 @@ export class SecretManagementComponent implements OnInit, OnDestroy {
 
         this.copyToClipboardService.copyToClipboard(
             this.secretUrlService.getFullRevealUrl(secret.guid)
-        )
+        );
+
+        this.snackBarService.openSnackBar('Secret URL copied to clipboard', 'Close');
     }
 
 

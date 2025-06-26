@@ -79,9 +79,7 @@ export class RevealSecretComponent implements OnDestroy {
   copySecretToClipboard() {
     if (this.secret) {
       this.copyToClipboardService.copyToClipboard(this.secret);
-      this.snackBarService.openSnackBar('Secret copied to clipboard', 'Close', {
-        duration: 3000,
-      });
+      this.snackBarService.openSnackBar('Secret copied to clipboard', 'Close');
     }
   }
 

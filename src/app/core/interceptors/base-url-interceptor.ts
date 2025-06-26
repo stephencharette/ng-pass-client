@@ -64,7 +64,7 @@ export class BaseUrlInterceptor implements HttpInterceptor {
     }
 
     private handleErrorAlert(response: HttpErrorResponse): void {
-        this.snackBarService.openSnackBar('An error occured', 'Close', { duration: 3000 });
+        this.snackBarService.openSnackBar('An error occured', 'Close');
     }
 
     /**

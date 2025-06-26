@@ -68,7 +68,7 @@ export class CreateSecretComponent implements OnDestroy {
   copyUriToClipboard() {
     if (this.shareSecretUri) {
       this.copyToClipboardService.copyToClipboard(this.shareSecretUri);
-      this.snackBarService.openSnackBar('URL copied to clipboard', 'Close', { duration: 3000 });
+      this.snackBarService.openSnackBar('URL copied to clipboard', 'Close');
     }
   }
 
