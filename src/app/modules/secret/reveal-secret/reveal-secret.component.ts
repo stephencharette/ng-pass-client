@@ -34,7 +34,6 @@ import { RouteConstants } from '../../../core/constants/routes';
         ReactiveFormsModule,
     ],
     templateUrl: './reveal-secret.component.html',
-    styleUrl: './reveal-secret.component.scss'
 })
 export class RevealSecretComponent implements OnDestroy {
   revealButtonDisabled: boolean = false;
