@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { SecretGridResponse } from '../../../secret-management/models/secret-grid-response';
+import { environment } from '../../../../../../environments/environment';
 
 export interface SecretNotification {
     id: string;
@@ -31,9 +32,9 @@ export class SecretsSignalRService {
 
     constructor() { }
 
-    startConnection(apiUrl: string): Promise<void> {
+    startConnection(): Promise<void> {
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl(`${apiUrl}/hubs/secrets`, { // TODO: take from environment variable
+            .withUrl(`${environment.apiUri}/hubs/secrets`, {
                 skipNegotiation: true,
                 transport: signalR.HttpTransportType.WebSockets
             })

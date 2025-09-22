@@ -175,7 +175,7 @@ export class SecretManagementComponent implements OnInit, OnDestroy {
 
     private async connectToHub(): Promise<void> {
         try {
-            await this.signalRService.startConnection(this.apiUrl); // Replace with your API URL
+            await this.signalRService.startConnection(); // Replace with your API URL
         } catch (error) {
             console.error('Failed to connect to SignalR hub:', error);
             this.errorMessage = 'Failed to connect to real-time updates';
